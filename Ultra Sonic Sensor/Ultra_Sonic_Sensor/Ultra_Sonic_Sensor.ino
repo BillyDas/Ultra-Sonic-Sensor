@@ -17,27 +17,49 @@
 #define TRIG 12
 #define ECHO 13
 #define USMAX 3000
+#define GREEN 11
+#define RED 10
+
 void setup() {
  Serial.begin(115200); //open serial port
- usonicsetup(); //set up ultrasonic sensor
+ PortSetup(); //set up ultrasonic sensor
 }
 void loop() {
  int d; //variable to store distance
  d=usonic(11600)/58; //distance in cm, time out at 11600us or 2m maximum range
- Serial.println(d); //print distance in cm
- delay(200); //wait a bit so we don't overload the serial port
+// Serial.println(d); //print distance in cm
+
+ if (d < 20) {
+  String CarParked = "Car Spot Taken, Distance Reading: ";
+  String OutputParked = CarParked + d + " CM";
+  digitalWrite(RED, HIGH);
+  digitalWrite(GREEN, LOW);
+  Serial.println(OutputParked);
+ } else {
+  String CarVacant = "Car Spot Vacant, Distance Reading: ";
+  String OutputVacant = CarVacant + d + " CM";
+  digitalWrite(RED, LOW);
+  digitalWrite(GREEN, HIGH);
+  Serial.println(OutputVacant);
+ }
+ 
+ delay(5000); //wait a bit so we don't overload the serial port
 }
 
-void usonicsetup(void){
+//PIN SETUP
+void PortSetup(void){
  pinMode(ECHO, INPUT);
  pinMode(TRIG, OUTPUT);
+ pinMode(GREEN, OUTPUT);
+ pinMode(RED, OUTPUT);
  digitalWrite(TRIG, LOW);
+
  
 }
-long usonic(long utimeout){ //utimeout is maximum time to wait for return in us
+//ULTRA SONIC SENSOR READING DATA
+long usonic(long utimeout) { //utimeout is maximum time to wait for return in us
  long b;
- if(digitalRead(ECHO)==HIGH){return 0;} //if echo line is still low from last result,
-return 0;
+ if(digitalRead(ECHO)==HIGH){return 0;} //if echo line is still low from last result, return 0;
  digitalWrite(TRIG, HIGH); //send trigger pulse
  delay(1);
  digitalWrite(TRIG, LOW);
