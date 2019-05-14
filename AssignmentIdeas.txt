@@ -1,0 +1,1 @@
+Use a weather API to display weather and show a message "its going to be busy today" if its hot or "it wont be busy" if its cold
