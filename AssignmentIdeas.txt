@@ -1,1 +1,6 @@
-Use a weather API to display weather and show a message "its going to be busy today" if its hot or "it wont be busy" if its cold
+•	Use a weather API to display weather and show a message "its going to be busy today" if its hot or "it wont be busy" if its cold
+•	a small web site in the raspberry pi  that displays the car park’s availability 
+•	by adding a database into the system , you can track the usage of car park (duration) and display it in the website as well 
+•	Based on that duration, you can create  small function that calculates a ticket price for parking
+•	Send that ticket to the user by an email after he gets out of the car park. 
+•	For cloud : you can use regression machine learning model to predict the availability of car park space etc. 
