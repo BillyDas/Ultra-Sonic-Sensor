@@ -3,4 +3,7 @@
 •	by adding a database into the system , you can track the usage of car park (duration) and display it in the website as well 
 •	Based on that duration, you can create  small function that calculates a ticket price for parking
 •	Send that ticket to the user by an email after he gets out of the car park. 
+	Email Guide Links:
+	How To Setup Email Function PHP:	https://www.w3schools.com/php/func_mail_mail.asp
+	How To Setup gmail SMTP server form PHP:	https://stackoverflow.com/questions/712392/send-email-using-the-gmail-smtp-server-from-a-php-page
 •	For cloud : you can use regression machine learning model to predict the availability of car park space etc. 
