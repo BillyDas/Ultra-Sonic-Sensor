@@ -1,3 +1,4 @@
+#include <ArduinoJson.h>
 // Ultrasonic HC-SR04 unit interface
 // Uses serial port at 115200 baud for communication
 // use trig pin for output, echo pin for input
@@ -17,33 +18,39 @@
 #define TRIG 12
 #define ECHO 13
 #define USMAX 3000
+int timeset = 0;
 #define GREEN 11
 #define RED 10
+const int capacity = JSON_OBJECT_SIZE(2);
+StaticJsonDocument<capacity> doc;
+
 
 void setup() {
  Serial.begin(115200); //open serial port
  PortSetup(); //set up ultrasonic sensor
 }
 void loop() {
- int d; //variable to store distance
- d=usonic(11600)/58; //distance in cm, time out at 11600us or 2m maximum range
-// Serial.println(d); //print distance in cm
-
- if (d < 20) {
-  String CarParked = "Car Spot Taken, Distance Reading: ";
-  String OutputParked = CarParked + d + " CM";
+ int distance; //variable to store distance
+ distance=usonic(11600)/58; //distance in cm, time out at 11600us or 2m maximum range
+ sizeof(distance);
+ if (distance < 30) {
+  timeset += 250;
+  doc["Vacancy"].set(1);
+  doc["Duration"].set(timeset);
+  String CurrentParkingStatusTaken = "1"; //If the parking system is currently taken it will output a 1 into the bit length
   digitalWrite(RED, HIGH);
   digitalWrite(GREEN, LOW);
-  Serial.println(OutputParked);
+  Serial.println(CurrentParkingStatusTaken);
  } else {
-  String CarVacant = "Car Spot Vacant, Distance Reading: ";
-  String OutputVacant = CarVacant + d + " CM";
+  doc["Vacancy"].set(0);
+  doc["Duration"].set(timeset);
+  String CurrentParkingStatusVacant = "0"; //If the parking system is currently Vacant it will output a 0 into the bit length
   digitalWrite(RED, LOW);
   digitalWrite(GREEN, HIGH);
-  Serial.println(OutputVacant);
+  Serial.println(CurrentParkingStatusVacant);
  }
- 
- delay(5000); //wait a bit so we don't overload the serial port
+ delay(250); //wait a bit so we don't overload the serial port
+ serializeJson(doc, Serial);
 }
 
 //PIN SETUP
