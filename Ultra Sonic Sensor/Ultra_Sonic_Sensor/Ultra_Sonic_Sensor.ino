@@ -34,23 +34,18 @@ void loop() {
  int distance; //variable to store distance
  distance=usonic(11600)/58; //distance in cm, time out at 11600us or 2m maximum range
 
- 
  if (distance < 20) {
-  timeset += 0.5;
   doc["Vacancy"].set(1);
-  doc["Duration"].set(timeset);
   digitalWrite(RED, HIGH);
   digitalWrite(GREEN, LOW);
  } else {
   doc["Vacancy"].set(0);
-  doc["Duration"].set(timeset);
-  timeset = 0;
   digitalWrite(RED, LOW);
   digitalWrite(GREEN, HIGH);
  }
 
  
- delay(500); //wait a bit so we don't overload the serial port
+ delay(1000); //wait a bit so we don't overload the serial port
 
  serializeJson(doc, Serial);
  Serial.println("");
