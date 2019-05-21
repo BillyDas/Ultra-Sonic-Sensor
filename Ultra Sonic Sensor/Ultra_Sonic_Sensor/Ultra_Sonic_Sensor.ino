@@ -18,11 +18,12 @@
 #define TRIG 12
 #define ECHO 13
 #define USMAX 3000
-int timeset = 0;
+double timeset = 0;
 #define GREEN 11
 #define RED 10
 const int capacity = JSON_OBJECT_SIZE(2);
 StaticJsonDocument<capacity> doc;
+
 
 
 void setup() {
@@ -32,25 +33,22 @@ void setup() {
 void loop() {
  int distance; //variable to store distance
  distance=usonic(11600)/58; //distance in cm, time out at 11600us or 2m maximum range
- sizeof(distance);
- if (distance < 30) {
-  timeset += 250;
+
+ if (distance < 20) {
   doc["Vacancy"].set(1);
-  doc["Duration"].set(timeset);
-  String CurrentParkingStatusTaken = "1"; //If the parking system is currently taken it will output a 1 into the bit length
   digitalWrite(RED, HIGH);
   digitalWrite(GREEN, LOW);
-  Serial.println(CurrentParkingStatusTaken);
  } else {
   doc["Vacancy"].set(0);
-  doc["Duration"].set(timeset);
-  String CurrentParkingStatusVacant = "0"; //If the parking system is currently Vacant it will output a 0 into the bit length
   digitalWrite(RED, LOW);
   digitalWrite(GREEN, HIGH);
-  Serial.println(CurrentParkingStatusVacant);
  }
- delay(250); //wait a bit so we don't overload the serial port
+
+ 
+ delay(1000); //wait a bit so we don't overload the serial port
+
  serializeJson(doc, Serial);
+ Serial.println("");
 }
 
 //PIN SETUP
