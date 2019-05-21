@@ -1,0 +1,6 @@
+<?php
+$host = "flocalhost";
+$user = "admin";
+$pwd = "admin";
+$sql_db = "assignment2";
+?>

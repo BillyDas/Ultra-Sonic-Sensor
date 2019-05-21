@@ -1,0 +1,7 @@
+How to view serial stats
+
+dmesg | grep tty
+
+then check the interface at the bottom and the refresh rate
+
+screen /dev/ttyACM0 115200

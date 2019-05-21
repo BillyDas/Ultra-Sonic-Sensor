@@ -1,0 +1,42 @@
+body 
+{
+	text-align: center;
+	background-color: #e9ecef;
+}
+
+h1 
+{
+	text-align: center;
+}
+
+table
+{
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+th, td
+{
+	padding-left: 7px;
+	padding-right: 7px;
+	background-color: white;
+}
+
+a
+{
+	font-weight: 1000; 
+}
+
+.progress
+{
+	margin-left: auto;
+	margin-right: auto;
+	width: 375px;
+	
+}
+
+#back
+{
+	color: #007bff;
+}
