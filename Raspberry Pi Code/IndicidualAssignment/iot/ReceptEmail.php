@@ -24,7 +24,7 @@ if (!$conn)
 		echo "<p>Database Connection Failure</p>";
 	} 
 	else 
-	{
+	{		
    	echo "<h1> Send Reciept To Customer </h1>"; 
       echo "<table border=\"2\">\n";
 		echo "<tr>\n "
@@ -61,20 +61,57 @@ if (!$conn)
 </form>
 
 	<?php
-	if(isset($_POST['NumberPlate']))
+	require_once "Mail.php";
+	
+    if(isset($_POST['NumberPlate']) && ($_POST['NumberPlate'] != ""))
 	{
+		$Numberplate = $_POST['NumberPlate'];
+		$query = "SELECT * FROM ParkingUsers WHERE Numberplate = '$Numberplate'";        
+		$result = mysqli_query($conn, $query); 
+		while ($row = mysqli_fetch_assoc($result))
+         {
+         	$queryForParkAmmount = "SELECT * FROM ParkedDuration WHERE NumberPlate = '$Numberplate' ORDER BY ID DESC";
+      		$ParkAmmount = mysqli_query($conn, $queryForParkAmmount);
+      		$resultParkAmmount = mysqli_fetch_assoc($ParkAmmount);
+         	$Price = $resultParkAmmount["ParkTime"];
+         	$to = '<'.$row["Email"].'>';	
+         	$Email = $row["Email"];
+         	$Price = $Price * .166;
+         }
+		
+		$msg = "Thank You For Parking With Rip Off Parking \nYour Numberplate Is ".$Numberplate." \nThe Ammount Due Is $".$Price." AUD";
+		
+		
+		$from = '<billydasuni@gmail.com>';
+		$subject = 'Parking Reciept';
 	
-		$msg = "Thank You For Parking With Us \n".$_POST['NumberPlate']." It Was A Pleasure";
-		mail("wardude202@hotmail.com","My subject",$msg);
+		$headers = array(
+    	'From' => $from,
+   	 'To' => $to,
+   	 'Subject' => $subject
+	);
+
+		$smtp = Mail::factory('smtp', array(
+        'host' => 'ssl://smtp.gmail.com',
+        'port' => '465',
+        'auth' => true,
+        'username' => 'billydasuni@gmail.com',
+        'password' => 'Billy202'
+    ));
+	
+		$mail = $smtp->send($to, $headers, $msg);
+		
+		if (PEAR::isError($mail)) {
+    		echo('<p>' . $mail->getMessage() . '</p>');
+		} 
+		else {
+			echo "<br />";
+    		echo '<p>Message successfully sent to '.$Email.'</p>';
+		}	
+		
 	}
-	
-	
-	
+
 	?>
-<br>
-<br>
-<br>
-<br>
 	<hr>
 	<br>
 	<a class="btn btn-primary btn-sm" href="index.html" role="button ">Back To Index</a>

@@ -57,7 +57,7 @@ def get_parked_status():
         print("Error With Input")
     global vacancy
     vacancy = OutPut["Vacancy"]
-    time.sleep(2)
+    time.sleep(1)
     return vacancy
     
     
@@ -91,7 +91,7 @@ while True:
     if parkedduration != None:
         global parkedduration
         comparison = float(parkedduration)
-        if not(comparison < 0.1):
+        if not(comparison < .1):
             global ArrayLength
             query = "SELECT NumberPlate FROM ParkingUsers"
             cursor.execute(query)
