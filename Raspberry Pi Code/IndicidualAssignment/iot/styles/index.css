@@ -1,0 +1,20 @@
+body 
+{
+	text-align: center;
+}
+
+input
+{
+	text-align: center;
+}
+
+
+
+ul#container #nav #navitem{
+	min-width: 696px;
+	list-style: none;
+	}
+	
+	ul#container li {
+		display: inline;
+	}
