@@ -1,10 +1,10 @@
 import mysql.connector as mariadb
-import RPi.GPIO as GPIO
-import re
+from mysql.connector import Error
+from mysql.connector import errorcode
 import sys
-import os
 import serial
 import json
+import random
 import time
 
 vacancy = None
@@ -12,6 +12,7 @@ OutPut = None
 parkedduration = None
 parked = None
 parkedprevious = 0
+ArrayLength = 0
 
 #DB connection variables
 sys.stdout.write("-----Starting Database Connection-----\n" )
@@ -22,7 +23,16 @@ cursor = connection.cursor(buffered=True)
 try:
     query = "CREATE TABLE IF NOT EXISTS CurrentlyParked (Parked int(1) NOT NULL, Primary KEY(Parked));"
     cursor.execute(query)
-    query = "CREATE TABLE IF NOT EXISTS ParkedDuration (ID int(10) AUTO_INCREMENT, ParkTime int(5) NOT NULL, Primary KEY(ID));"
+    query = "CREATE TABLE IF NOT EXISTS ParkedDuration (ID int(10) AUTO_INCREMENT, ParkTime DOUBLE(6,2) NOT NULL, NumberPlate varchar(6) NOT NULL, Primary KEY(ID));"
+    cursor.execute(query)
+    query = "CREATE TABLE IF NOT EXISTS ParkingUsers (NumberPlate varchar(6) NOT NULL, Email varchar(30) NOT NULL, Name varchar(15) NOT NULL, Primary KEY(NumberPlate));"
+    cursor.execute(query)
+    query ="INSERT IGNORE INTO ParkingUsers (NumberPlate, Email, Name)VALUES ('1CD2SD','wardude202@hotmail.com', 'BillyDas')," \
+            "('1LS2MD','billy.das@hotmail.com', 'BillyDasWork')," \
+            "('0LD9KD','10115315@student.swin.edu.au', 'Student Email')," \
+            "('6DF4HJ','SpamBam1234@hotmail.com', 'SpamEmail')," \
+            "('8KS5LK','ShopAndShipIt@hotmail.com', 'ShopAndShipIt');";
+    print(query)
     cursor.execute(query)
     connection.commit()
 except:
@@ -36,8 +46,6 @@ try:
 except:
     print("Yo we couldnt connect to the arduino")
     
-time.sleep(1)
-
 #Checks if there is a car parked
 def get_parked_status():
     global OutPut
@@ -49,7 +57,7 @@ def get_parked_status():
         print("Error With Input")
     global vacancy
     vacancy = OutPut["Vacancy"]
-    time.sleep(1)
+    time.sleep(2)
     return vacancy
     
     
@@ -83,10 +91,23 @@ while True:
     if parkedduration != None:
         global parkedduration
         comparison = float(parkedduration)
-        if not(comparison < 1):  
-            query = "INSERT INTO ParkedDuration (ParkTime) VALUES ('" + parkedduration + "')"
+        if not(comparison < 0.1):
+            global ArrayLength
+            query = "SELECT NumberPlate FROM ParkingUsers"
             cursor.execute(query)
-            connection.commit()
+            NumberPlates = cursor.fetchall()
+            ArrayLength = len(NumberPlates)
+            NumberChosen = random.randint(0,ArrayLength)
+            NumberChosen = NumberChosen - 1
+            NumPlateChosen = NumberPlates[NumberChosen]
+            NumPlateChosen = "".join(NumPlateChosen)
+
+            try:
+                query = "INSERT INTO ParkedDuration (ParkTime, NumberPlate) VALUES ('" + parkedduration + "','" + NumPlateChosen + "')"
+                cursor.execute(query)
+                connection.commit()
+            except mysql.connector.Error as error :
+                print("Failed to work". format(error))
             print("Placed Park Time In Database")
             parkedduration = None
 cursor.close()

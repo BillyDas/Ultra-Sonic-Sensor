@@ -5,3 +5,11 @@ dmesg | grep tty
 then check the interface at the bottom and the refresh rate
 
 screen /dev/ttyACM0 115200
+
+
+PUT IOT FOLDER IN 
+VAR/WWW/
+so its
+VAR/WWW/IOT
+
+RUN FILE SCRIPT.SH

@@ -5,9 +5,19 @@
     $data = json_decode($json);
     $currentTemp = round($data->main->temp);
     
-    //echo "<p>Current Temp: " . $currentTemp . "°C</p>";
     echo "<h3> Current Temp In Melbourne</h3>";
     echo "<div class='progress w3-grey'>";
+    
     echo "    <div class='progress-bar bg-info w3-green' style='width: " . $currentTemp * 2 ."%' role='progressbar' aria-valuenow='0' aria-valuemin='-5' aria-valuemax='50'>$currentTemp °C</div>";
     echo "</div>";
+    
+    if ($currentTemp > 25)
+    {
+		echo "<h4> Its Probably Going To Be Busy Today!</h4>";    
+    }
+    else
+    {
+		echo "<h4> It Shouldn't Be Busy Today! </h4>";    
+    }
+
 ?>
