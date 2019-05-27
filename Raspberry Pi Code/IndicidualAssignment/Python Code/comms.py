@@ -27,7 +27,8 @@ try:
     cursor.execute(query)
     query = "CREATE TABLE IF NOT EXISTS ParkingUsers (NumberPlate varchar(6) NOT NULL, Email varchar(30) NOT NULL, Name varchar(15) NOT NULL, Primary KEY(NumberPlate));"
     cursor.execute(query)
-    query ="INSERT IGNORE INTO ParkingUsers (NumberPlate, Email, Name)VALUES ('1CD2SD','wardude202@hotmail.com', 'BillyDas')," \
+    query ="INSERT IGNORE INTO ParkingUsers (NumberPlate, Email, Name)VALUES" \
+            "('1CD2SD','wardude202@hotmail.com', 'BillyDas')," \
             "('1LS2MD','billy.das@hotmail.com', 'BillyDasWork')," \
             "('0LD9KD','10115315@student.swin.edu.au', 'Student Email')," \
             "('6DF4HJ','SpamBam1234@hotmail.com', 'SpamEmail')," \
@@ -103,7 +104,8 @@ while True:
             NumPlateChosen = "".join(NumPlateChosen)
 
             try:
-                query = "INSERT INTO ParkedDuration (ParkTime, NumberPlate) VALUES ('" + parkedduration + "','" + NumPlateChosen + "')"
+                query = "INSERT INTO ParkedDuration (ParkTime, NumberPlate) VALUES" \
+                "('" + parkedduration + "','" + NumPlateChosen + "')"
                 cursor.execute(query)
                 connection.commit()
             except mysql.connector.Error as error :

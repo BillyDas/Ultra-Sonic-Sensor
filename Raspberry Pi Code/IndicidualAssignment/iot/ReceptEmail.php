@@ -33,7 +33,7 @@ if (!$conn)
 	 	."<th scope=\"col\">Fee</th>\n "
 	 	."</tr>\n ";	
    
-	   $query = "SELECT NumberPlate,ParkTime FROM ParkedDuration ORDER BY ID DESC";        
+	   $query = "SELECT NumberPlate,ParkTime FROM ParkedDuration ORDER BY ID DESC LIMIT 10";        
 		$result = mysqli_query($conn, $query); 
 	   while ($row = mysqli_fetch_assoc($result))
       {
